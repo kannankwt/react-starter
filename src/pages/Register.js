@@ -1,7 +1,8 @@
 import React from 'react'
-import { Button, Box, MantineProvider, Text, TextInput, PasswordInput, Group } from '@mantine/core';
+import { Button, Box, Text, TextInput, PasswordInput, Group } from '@mantine/core';
 import { hasLength, isEmail, useForm } from '@mantine/form';
 import { useNavigate } from 'react-router-dom';
+import { notifications } from '@mantine/notifications';
 
 const Register = () => {
     const form = useForm({
@@ -17,15 +18,6 @@ const Register = () => {
     const navigate = useNavigate();
   
     return (
-      <MantineProvider withCSSVariables withGlobalStyles withNormalizeCSS
-      theme={{
-        colorScheme: 'light',
-        colors: {
-          'blue': ['#7AD1DD', '#5FCCDB', '#44CADC', '#2AC9DE', '#1AC2D9', '#11B7CD', '#09ADC3', '#0E99AC', '#128797', '#147885'],
-          'pink': ['#F0BBDD', '#ED9BCF', '#EC7CC3', '#ED5DB8', '#F13EAF', '#F71FA7', '#FF00A1', '#E00890', '#C50E82', '#AD1374'],
-        }
-      }}
-      >
         <Group h="100vh"
         sx={(theme) => ({
           backgroundColor: theme.colorScheme === 'dark'? "black":theme.colors.pink[5]
@@ -39,7 +31,11 @@ const Register = () => {
           >
               <form onSubmit={form.onSubmit((values)=>{
                 console.log(values);
-                navigate('/');
+                notifications.show({
+                  title: 'Registered User',
+                  message: values,
+                })
+                navigate('/login');
               })}>
                 <Text fs="italic" fw="bold" fz="xl" ta="center" c="blue">REGISTER</Text>
                 <TextInput mt="md" withAsterisk label="First Name" {...form.getInputProps("firstName")} />
@@ -52,7 +48,6 @@ const Register = () => {
               </form>
           </Box>
         </Group>
-      </MantineProvider>
     )
 }
 
