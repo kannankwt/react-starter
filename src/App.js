@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import { Notifications } from '@mantine/notifications';
 import { MantineProvider } from '@mantine/core';
 import Login from './pages/Login';
+import { RequireAuth } from 'react-auth-kit';
 
 function App() {
 
@@ -22,7 +23,11 @@ function App() {
       <Notifications />
       <Routes>
         <Route path='/register' element={<Register />}/>
-        <Route path='/' element={<Home />}/>
+        <Route path='/' element={
+          <RequireAuth loginPath={'/login'}>
+            <Home />
+          </RequireAuth>
+        }/>
         <Route path='/login' element={<Login />}/>
       </Routes>
     </MantineProvider>

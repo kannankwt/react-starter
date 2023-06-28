@@ -5,9 +5,11 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { token } from "../api/token";
 import { useMutation } from '@tanstack/react-query';
+import { useSignIn } from 'react-auth-kit';
 
 const Login = () => {
     const navigate = useNavigate();
+    const login = useSignIn();
 
     const form = useForm({
         initialValues: { username: '', password: '' },
@@ -22,6 +24,13 @@ const Login = () => {
             return token(loginData)
         },
         onSuccess: (data)=>{
+            login({
+                token: data.data.access,
+                expiresIn: 3600,
+                tokenType: "Bearer",
+                authState: {username: form.values.username}
+            })
+
             notifications.show({
                 title: 'User',
                 message: JSON.stringify(data.data),
